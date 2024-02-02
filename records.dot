@@ -1,0 +1,127 @@
+digraph Vulkan {
+  rankdir=LR;
+  Node [
+    shape=record;
+  ];
+  // create window
+  subgraph cluster_1 {
+    label="1. Create Window";
+    glfwCreateWindow [
+      color="blue";
+    ];
+    glfwCreateWindow -> GLFWwindow;
+  }
+  // create instance
+  subgraph cluster_2 {
+    label="2. Create an Instance";
+    VkInstanceCreateInfo [
+      color="red";
+      label="VkInstanceCreateInfo";
+    ];
+    VkInstanceCreateInfoContent [
+      label="<VkApplicationInfo>Application Info| Extension Names| Validation Layer Names";
+    ];
+    VkInstanceCreateInfo -> VkInstanceCreateInfoContent;
+    VkInstanceCreateInfoContent:VkApplicationInfo -> VkApplicationInfo;
+    VkApplicationInfo [
+      color="red";
+    ];
+    VkApplicationInfo -> VkApplicationInfoContent;
+    VkApplicationInfoContent [
+      label="Application Name|Application Version| Engine Version| Api Version";
+    ];
+    vkCreateInstance [
+      color="blue";
+    ];
+    VkInstanceCreateInfo -> vkCreateInstance;
+    VkInstance [
+      color="darkorange";
+    ];
+    vkCreateInstance -> VkInstance;
+  }
+  // check validation layerse
+  subgraph cluster_3 {
+    label="3. Check Validation Layer Support";
+    vkEnumerateInstanceLayerProperties [
+      color="blue";
+    ];
+    VkLayerProperties [
+      color="red";
+    ];
+    vkEnumerateInstanceLayerProperties -> VkLayerProperties;
+    VkLayerPropertiesContent [
+      label="Name | Description";
+    ];
+    VkLayerProperties -> VkLayerPropertiesContent;
+  }
+  subgraph cluster_4 {
+    label="4. Setup Debug Messenger";
+    vkCreateDebugUtilsMessengerEXT [
+      color="blue";
+    ];
+    VkDebugUtilsMessengerCreateInfoEXTContent [
+      label="Message Severity (Warning, Error, ...)| Message Type (Validation, Performance, ...) | Callback Function (e.g. print error message)";
+    ];
+    VkDebugUtilsMessengerCreateInfoEXT [
+      color="red";
+    ];
+    VkDebugUtilsMessengerCreateInfoEXT -> VkDebugUtilsMessengerCreateInfoEXTContent;
+    vkCreateDebugUtilsMessengerEXT [
+      color="blue";
+    ];
+    VkDebugUtilsMessengerCreateInfoEXT -> vkCreateDebugUtilsMessengerEXT;
+  }
+  subgraph cluster_5 {
+    label="5. Create Surface";
+    glfwCreateWindowSurface [
+      color="blue";
+    ];
+    GLFWwindow -> glfwCreateWindowSurface;
+    VkSurfaceKHR [
+      color="darkorange";
+    ];
+    glfwCreateWindowSurface -> VkSurfaceKHR;
+    VkInstance -> glfwCreateWindowSurface;
+  }
+  subgraph cluster_6 {
+    label="6. Pick Physical Device";
+    vkEnumeratePhysicalDevices [
+      color="blue";
+    ];
+    VkPhysicalDevice [
+      color="red";
+    ];
+    vkEnumeratePhysicalDevices -> VkPhysicalDevice;
+    // Physical Device Properties
+    VkPhysicalDeviceProperties [
+      color="red";
+    ];
+    VkPhysicalDevicePropertiesContent [
+      label="Vendor ID | Device ID | <limits>Limits";
+    ];
+    VkPhysicalDevicePropertiesContent:limits -> VkPhysicalDeviceLimits;
+    VkPhysicalDeviceLimitsContents [
+      label="maxImageDimension1D| maxImageDimension2D";
+    ];
+    VkPhysicalDeviceLimits -> VkPhysicalDeviceLimitsContents;
+    VkPhysicalDeviceProperties -> VkPhysicalDevicePropertiesContent;
+    vkGetPhysicalDeviceProperties [
+      color="blue";
+    ];
+    VkPhysicalDevice -> vkGetPhysicalDeviceProperties;
+    vkGetPhysicalDeviceProperties -> VkPhysicalDeviceProperties;
+    // Physical Device Features
+    VkPhysicalDeviceFeatures [
+      color="red";
+    ];
+    VkPhysicalDeviceFeaturesContent [
+      label="geometryShader | tessellationShader";
+    ];
+    VkPhysicalDeviceFeatures -> VkPhysicalDeviceFeaturesContent;
+    vkGetPhysicalDeviceFeatures [
+      color="blue";
+    ];
+    VkPhysicalDevice -> vkGetPhysicalDeviceFeatures;
+    vkGetPhysicalDeviceFeatures -> VkPhysicalDeviceFeatures;
+  }
+}
