@@ -25,7 +25,7 @@ digraph Vulkan {
       label="VkInstanceCreateInfo";
     ];
     VkInstanceCreateInfoContent [
-      label="<VkApplicationInfo>Application Info| Extension Names| Validation Layer Names";
+      label="<VkApplicationInfo>Application Info| <ExtensionNames>Extension Names| Validation Layer Names";
     ];
     VkInstanceCreateInfo -> VkInstanceCreateInfoContent;
     VkInstanceCreateInfoContent:VkApplicationInfo -> VkApplicationInfo;
@@ -43,6 +43,10 @@ digraph Vulkan {
     VkInstance [
       color=red;
     ];
+    glfwGetRequiredInstanceExtensions [
+      color=blue;
+    ];
+    glfwGetRequiredInstanceExtensions -> VkInstanceCreateInfoContent:ExtensionNames;
     vkCreateInstance -> VkInstance;
   }
   // check validation layerse
